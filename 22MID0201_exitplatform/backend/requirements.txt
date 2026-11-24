@@ -1,0 +1,29 @@
+# Python 3.14 (only version installed on the dev machine; the plan said 3.12 —
+# all wheels below resolve natively on 3.14, so 3.14 is the pinned target).
+
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+python-multipart==0.0.21   # multipart/form-data — document uploads
+pydantic==2.13.5
+pydantic-settings==2.15.0
+python-dotenv==1.2.3
+supabase==2.31.0
+pyjwt[crypto]==2.14.0
+httpx==0.28.1
+
+# Direct Postgres. The [binary] extra matters: plain `psycopg` ships no libpq
+# and fails at import with "no pq wrapper available".
+psycopg[binary]==3.3.5
+
+# Agent — Phase 3 onward. Installed now to prove the stack resolves.
+langgraph==1.2.11
+langgraph-checkpoint-postgres==3.1.2
+anthropic==1.6.0
+
+# Autonomous sweep scheduler — Phase 7. APScheduler runs the nightly sweep
+# inside the FastAPI process. pg_cron is the production path (Phase 9).
+apscheduler==3.11.0
+
+# Embeddings — Phase 5 RAG. Uses the OpenAI SDK to call
+# text-embedding-3-small routed through the same Portkey gateway.
+openai>=1.54.0

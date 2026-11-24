@@ -1,0 +1,135 @@
+@import 'tailwindcss';
+
+/* ============================================================================
+   Design tokens
+
+   Offboarding is a countdown against a fixed last working day that ends in a
+   signed clearance. The visual language borrows from records and sign-off
+   sheets: ink on cool paper, hairline rules, status encoded structurally in a
+   left rail rather than scattered as coloured pills.
+   ========================================================================= */
+
+@theme {
+  /* Surfaces */
+  --color-paper: #fafaf8;
+  --color-surface: #ffffff;
+  --color-sunken: #f2f2ef;
+
+  /* Ink */
+  --color-ink: #1a1d23;
+  --color-ink-soft: #4a5260;
+  --color-muted: #78808f;
+  --color-line: #e3e4e0;
+  --color-line-strong: #cfd1cb;
+
+  /* Institutional primary — deliberately not Workday blue */
+  --color-indigo: #2e3a59;
+  --color-indigo-soft: #eceef3;
+
+  /* Status. Used on rails and markers, never as large fills. */
+  --color-moss: #3f6b4f; /* cleared / approved */
+  --color-moss-soft: #eaf0ea;
+  --color-amber: #b5832a; /* in progress / due soon */
+  --color-amber-soft: #f8f1e2;
+  --color-rust: #a64b37; /* breached / rejected */
+  --color-rust-soft: #f7ece8;
+
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Newsreader', ui-serif, Georgia, serif;
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+}
+
+/* Dark theme: the same ink relationships inverted onto deep slate. */
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --color-paper: #15181d;
+      --color-surface: #1b1f26;
+      --color-sunken: #12151a;
+      --color-ink: #e8e9e6;
+      --color-ink-soft: #b3b8c2;
+      --color-muted: #8a92a0;
+      --color-line: #2b3038;
+      --color-line-strong: #3c424c;
+      --color-indigo: #93a3c7;
+      --color-indigo-soft: #232a38;
+      --color-moss: #7aa585;
+      --color-moss-soft: #1d2922;
+      --color-amber: #d7ab5f;
+      --color-amber-soft: #2b2417;
+      --color-rust: #d08770;
+      --color-rust-soft: #2d1e1a;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme='dark'] {
+    --color-paper: #15181d;
+    --color-surface: #1b1f26;
+    --color-sunken: #12151a;
+    --color-ink: #e8e9e6;
+    --color-ink-soft: #b3b8c2;
+    --color-muted: #8a92a0;
+    --color-line: #2b3038;
+    --color-line-strong: #3c424c;
+    --color-indigo: #93a3c7;
+    --color-indigo-soft: #232a38;
+    --color-moss: #7aa585;
+    --color-moss-soft: #1d2922;
+    --color-amber: #d7ab5f;
+    --color-amber-soft: #2b2417;
+    --color-rust: #d08770;
+    --color-rust-soft: #2d1e1a;
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Dates, counts, currency, and IDs must align in columns. */
+  table,
+  time,
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-indigo);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
