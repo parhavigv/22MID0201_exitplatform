@@ -1,0 +1,66 @@
+name: Deploy demo to GitHub Pages
+
+# Public, fully interactive frontend demo backed by src/lib/mock.ts.
+# No backend, database or secrets are required for this deployment.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build mock-data demo
+        working-directory: frontend
+        run: npm run build
+        env:
+          VITE_USE_MOCKS: 'true'
+          VITE_API_BASE: '/api'
+          # Placeholder values only: supabase.ts throws at import time when these
+          # are absent. Mock mode never makes a Supabase request.
+          VITE_SUPABASE_URL: 'https://demo.supabase.co'
+          VITE_SUPABASE_ANON_KEY: 'public-demo-anon-key'
+          VITE_BASE_PATH: '/22MID0201_exitplatform/'
+          VITE_ROUTER_BASENAME: '/22MID0201_exitplatform'
+
+      - name: SPA fallback for deep links
+        run: cp frontend/dist/index.html frontend/dist/404.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

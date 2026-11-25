@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { HOME_FOR, useAuth } from '@/auth/AuthProvider'
 import { Button } from '@/components/ui'
 import { USE_MOCKS } from '@/lib/api'
@@ -173,9 +173,9 @@ export function NotFound() {
         <h1 className="font-serif text-[26px] text-ink">That page doesn't exist</h1>
         <p className="mt-1.5 text-ink-soft">The link may be out of date.</p>
         <div className="mt-5">
-          <a href={session ? HOME_FOR[session.role] : '/sign-in'}>
+          <Link to={session ? HOME_FOR[session.role] : '/sign-in'}>
             <Button variant="primary">Go to your dashboard</Button>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
